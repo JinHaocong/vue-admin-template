@@ -1,3 +1,8 @@
+/*
+ * @Author: Jin Haocong
+ * @Date: 2022-08-22 10:53:58
+ * @LastEditTime: 2022-08-22 11:20:58
+ */
 import router from './router'
 import store from './store'
 import { Message } from 'element-ui'

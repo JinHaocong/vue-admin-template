@@ -1,3 +1,8 @@
+<!--
+ * @Author: Jin Haocong
+ * @Date: 2022-08-22 10:53:58
+ * @LastEditTime: 2022-08-22 14:32:39
+-->
 <template>
   <section class="app-main">
     <transition name="fade-transform" mode="out-in">

@@ -1,3 +1,8 @@
+/*
+ * @Author: Jin Haocong
+ * @Date: 2022-08-22 10:53:58
+ * @LastEditTime: 2022-08-23 15:56:23
+ */
 import Vue from 'vue'
 
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
@@ -33,8 +38,17 @@ Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
 
-Vue.config.productionTip = false
+// 引入全局组件
+import CategorySelect from '@/components/CategorySelect'
+Vue.component(CategorySelect.name, CategorySelect)
+import HintButton from '@/components/HintButten'
+Vue.component(HintButton.name, HintButton)
 
+// 引入API请求接口
+import API from '@/api'
+Vue.prototype.$API = API
+
+Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,

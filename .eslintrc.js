@@ -25,6 +25,7 @@ module.exports = {
     "vue/multiline-html-element-content-newline":"off",
     "vue/name-property-casing": ["error", "PascalCase"],
     "vue/no-v-html": "off",
+    'vue/html-self-closing': 'off',
     'accessor-pairs': 2,
     'arrow-spacing': [2, {
       'before': true,

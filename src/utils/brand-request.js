@@ -1,7 +1,7 @@
 /*
  * @Author: Jin Haocong
  * @Date: 2022-08-22 10:53:58
- * @LastEditTime: 2022-08-22 15:36:02
+ * @LastEditTime: 2022-08-22 19:57:17
  */
 import axios from 'axios'
 import { MessageBox, Message } from 'element-ui'
@@ -10,7 +10,7 @@ import { getToken } from '@/utils/auth'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  baseURL: process.env.VUE_APP_BRAND_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
 
   timeout: 5000 // request timeout
@@ -53,6 +53,7 @@ service.interceptors.response.use(
 
     // 服务器响应失败的操作
     if (res.code !== 20000 && res.code !== 200) {
+      console.log(res)
       Message({
         message: res.message || 'Error',
         type: 'error',
