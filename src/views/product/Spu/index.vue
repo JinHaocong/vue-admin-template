@@ -1,13 +1,13 @@
 <!--
  * @Author: Jin Haocong
  * @Date: 2022-08-22 14:20:58
- * @LastEditTime: 2022-08-23 17:21:14
+ * @LastEditTime: 2022-08-24 16:17:42
 -->
 <template>
   <div>
     <el-card style="margin:20px 0">
       <!-- 三级联动全局组件  -->
-      <CategorySelect :show="!show" @getCategory="handler1"></CategorySelect>
+      <CategorySelect :show="scene!==0" @getCategory="handler1"></CategorySelect>
     </el-card>
     <!-- 底部这里是会有三部分进行切换 -->
     <el-card>
@@ -42,13 +42,19 @@
             prop="prop"
             label="操作"
             width="width"
+            align="center"
           >
             <template slot-scope="{row}">
               <!-- 这里的按钮将来用hintButton替换 -->
-              <HintButton title="添加spu" type="success" icon="el-icon-plus" size="mini"></HintButton>
+              <HintButton title="添加sku" type="success" icon="el-icon-plus" size="mini" @click="addSku(row)"></HintButton>
               <HintButton title="修改spu" type="warning" icon="el-icon-edit" size="mini" @click="updateSpu(row)"></HintButton>
-              <HintButton title="查看当前spu的sku列表" type="info" icon="el-icon-info" size="mini"></HintButton>
-              <HintButton title="删除spu" type="danger" icon="el-icon-delete" size="mini"></HintButton>
+              <HintButton title="查看当前spu的sku列表" type="primary" icon="el-icon-view" size="mini" @click="handler(row)"></HintButton>
+              <el-popconfirm
+                :title="`确定要删除 “${row.spuName}” 吗？`"
+                @onConfirm="deleteSpu(row)"
+              >
+                <HintButton slot="reference" title="删除spu" type="danger" icon="el-icon-delete" size="mini"></HintButton>
+              </el-popconfirm>
             </template>
           </el-table-column>
         </el-table>
@@ -66,8 +72,47 @@
         </el-pagination>
       </div>
       <spu-form v-show="scene===1" ref="spu" @changeScene="changeScene"></spu-form>
-      <sku-form v-show="scene===2"></sku-form>
+      <sku-form v-show="scene===2" ref="sku" @changeScenes="changeScenes"></sku-form>
     </el-card>
+    <el-dialog :title="` “${spu.spuName}” 的SKU列表`" :visible.sync="dialogTableVisible" @close="close">
+      <el-table
+        v-loading="loading"
+        :data="skuList"
+        style="width: 100%"
+        border
+      >
+        <el-table-column
+          prop="skuName"
+          label="名称"
+          width="width"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="price"
+          label="价格"
+          width="width"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="weight"
+          label="重量"
+          width="width"
+          align="center"
+        >
+        </el-table-column>
+        <el-table-column
+          label="默认图片"
+          width="width"
+          align="center"
+        >
+          <template slot-scope="{row}">
+            <img :src="row.skuDefaultImg" alt="" style="width:100px;height:100px">
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-dialog>
   </div>
 </template>
 
@@ -89,11 +134,20 @@ export default {
       total: 0,
       records: [],
 
-      // 控制三级联动的可操作性
-      show: true,
-
       // 状态切换 0展示spu列表 1展示spu添加或修改 2添加或修改sku
-      scene: 0
+      scene: 0,
+
+      // 控制对话框的显示与隐藏
+      dialogTableVisible: false,
+
+      // 存储spu
+      spu: [],
+
+      // 存储sku列表
+      skuList: [],
+
+      // loading
+      loading: true
     }
   },
   methods: {
@@ -133,9 +187,10 @@ export default {
       this.getSpuList()
     },
 
-    // 添加spu按钮
+    // 添加spu按钮 通知子组件发送请求
     addSpu() {
       this.scene = 1
+      this.$refs.spu.addSpudate(this.category3Id)
     },
 
     // 修改spu按钮
@@ -146,8 +201,57 @@ export default {
     },
 
     // 子组件点击取消按钮 自定义事件
-    changeScene(scene) {
+    // flag是为了去分添加还是修改
+    changeScene({ scene, flag }) {
       this.scene = scene
+      if (flag === '修改') {
+        this.getSpuList(this.page)
+      } else {
+        this.getSpuList(1)
+      }
+    },
+
+    // 删除spu 按钮
+    async deleteSpu(row) {
+      const result = await this.$API.spu.reqDeleteSpu(row.id)
+      if (result.code === 200) {
+        this.$message({
+          type: 'success',
+          message: '删除成功'
+        })
+        this.getSpuList(this.records.length > 1 ? this.page : this.page - 1)
+      }
+    },
+
+    // 添加sku 按钮
+    addSku(row) {
+      this.scene = 2
+      // 父组件调用子组件的方法 让子组件发请求
+      this.$refs.sku.getData(this.category1Id, this.category2Id, row)
+    },
+
+    // skuform通知父组件改变scene
+    changeScenes() {
+      this.scene = 0
+    },
+
+    // 查看当前spu的sku列表的按钮
+    async handler(spu) {
+      this.dialogTableVisible = true
+      this.spu = spu
+      // 获取数据
+      const result = await this.$API.spu.reqSkuList(spu.id)
+      if (result.code === 200) {
+        this.skuList = result.data
+        // 隐藏loading
+        this.loading = false
+      }
+    },
+
+    // 关闭对话框
+    close() {
+      this.loading = true
+      this.skuList = []
     }
   }
 }

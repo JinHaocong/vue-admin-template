@@ -1,7 +1,7 @@
 <!--
  * @Author: Jin Haocong
  * @Date: 2022-08-22 14:21:49
- * @LastEditTime: 2022-08-23 14:48:49
+ * @LastEditTime: 2022-08-24 00:52:06
 -->
 <template>
   <div>
@@ -116,7 +116,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-button type="primary" :disabled="!attrInfo.attrValueList.length" @click="addOrUpdateAttr">保存</el-button>
+        <el-button type="primary" :disabled="isDisabled" @click="addOrUpdateAttr">保存</el-button>
         <el-button @click="isShowTable = true">取消</el-button>
       </div>
     </el-card>
@@ -146,6 +146,19 @@ export default {
         categoryId: 0, // 三级分类id
         categoryLevel: 3
       }
+
+    }
+  },
+  computed: {
+    isDisabled() {
+      var isdisabled = false
+      const includesNull = this.attrInfo.attrValueList.some(item => {
+        return item.valueName.trim() === ''
+      })
+      if (this.attrInfo.attrValueList.length === 0 || includesNull === true) {
+        isdisabled = true
+      }
+      return isdisabled
     }
   },
   methods: {
@@ -217,7 +230,6 @@ export default {
 
     // 修改属性按钮
     updateAttr(row) {
-      console.log(row)
       this.isShowTable = false
       // 将选中的属性赋值给attrInfo
       // 深拷贝(数据结构存在对象套数组数组套对象)
@@ -231,6 +243,7 @@ export default {
 
     // 切换模式 与校验
     tolook(row) {
+      this.value = row.valueName
       // row是当前用户添加的最新的属性值
       // 删除首尾空格后进行判断属性值是否为空，为空的话不能保存
       if (row.valueName.trim() === '') {
@@ -249,6 +262,7 @@ export default {
           return item.valueName === row.valueName
         }
       })
+      console.log(row)
       if (isRepeat) {
         this.$message(
           { message: '属性值已存在',
