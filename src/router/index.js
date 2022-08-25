@@ -1,7 +1,7 @@
 /*
  * @Author: Jin Haocong
  * @Date: 2022-08-22 10:53:58
- * @LastEditTime: 2022-08-22 14:28:21
+ * @LastEditTime: 2022-08-25 19:47:15
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -92,7 +92,72 @@ export const constantRoutes = [
       }
     ]
   },
-
+  {
+    name: 'Acl',
+    path: '/acl',
+    component: Layout,
+    redirect: '/acl/user/list',
+    meta: {
+      title: '权限管理',
+      icon: 'el-icon-lock'
+    },
+    children: [
+      {
+        name: 'User',
+        path: 'user/list',
+        component: () => import('@/views/acl/user/list'),
+        meta: {
+          title: '用户管理'
+        }
+      },
+      {
+        name: 'Role',
+        path: 'role/list',
+        component: () => import('@/views/acl/role/list'),
+        meta: {
+          title: '角色管理'
+        }
+      },
+      {
+        name: 'RoleAuth',
+        path: 'role/auth/:id',
+        component: () => import('@/views/acl/role/roleAuth'),
+        meta: {
+          activeMenu: '/acl/role/list',
+          title: '角色授权'
+        },
+        hidden: true
+      },
+      {
+        name: 'Permission',
+        path: 'permission/list',
+        component: () => import('@/views/acl/permission/list'),
+        meta: {
+          title: '菜单管理'
+        }
+      }
+    ]
+  },
+  {
+    path: '/test',
+    component: Layout,
+    name: 'Test',
+    meta: { title: '测试管理', icon: 'el-icon-goods' },
+    children: [
+      {
+        path: 'test1',
+        name: 'Test1',
+        component: () => import('@/views/Test/Test1'),
+        meta: { title: '测试管理1' }
+      },
+      {
+        path: 'test2',
+        name: 'Test2',
+        component: () => import('@/views/Test/Test2'),
+        meta: { title: '测试管理2' }
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

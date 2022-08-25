@@ -48,7 +48,9 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: { '^/brand-api': '' }
       }
-    }
+    },
+    // 开启mock数据
+    after: require('./mock/mock-server')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

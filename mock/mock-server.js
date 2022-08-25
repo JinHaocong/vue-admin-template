@@ -1,3 +1,8 @@
+/*
+ * @Author: Jin Haocong
+ * @Date: 2022-08-22 10:53:58
+ * @LastEditTime: 2022-08-25 16:44:35
+ */
 const chokidar = require('chokidar')
 const bodyParser = require('body-parser')
 const chalk = require('chalk')
@@ -34,7 +39,7 @@ function unregisterRoutes() {
 // for mock server
 const responseFake = (url, type, respond) => {
   return {
-    url: new RegExp(`${process.env.VUE_APP_BASE_API}${url}`),
+    url: new RegExp(`${process.env.VUE_APP_MOCK_API}${url}`),
     type: type || 'get',
     response(req, res) {
       console.log('request invoke:' + req.path)

@@ -1,12 +1,19 @@
+/*
+ * @Author: Jin Haocong
+ * @Date: 2022-08-22 10:53:58
+ * @LastEditTime: 2022-08-25 16:47:34
+ */
 const Mock = require('mockjs')
 const { param2Obj } = require('./utils')
 
 const user = require('./user')
 const table = require('./table')
+const home = require('./home')
 
 const mocks = [
   ...user,
-  ...table
+  ...table,
+  ...home
 ]
 
 // for front mock
