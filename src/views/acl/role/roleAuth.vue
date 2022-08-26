@@ -93,7 +93,8 @@ export default {
         this.$message.success(result.$message || '分配权限成功')
         // 必须在跳转前获取(跳转后通过this获取不到正确的数据了)
         const roleName = this.$route.query.roleName
-        const roles = this.$store.getters.roles
+        const roles = this.$store.state.user.roles
+        console.log()
         this.$router.replace('/acl/role/list', () => {
           console.log('replace onComplete')
           // 跳转成功后, 判断如果更新的是当前用户对应角色的权限, 重新加载页面以获得最新的数据
@@ -106,3 +107,4 @@ export default {
   }
 }
 </script>
+

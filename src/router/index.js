@@ -1,17 +1,14 @@
 /*
  * @Author: Jin Haocong
  * @Date: 2022-08-22 10:53:58
- * @LastEditTime: 2022-08-25 19:47:15
+ * @LastEditTime: 2022-08-26 09:21:41
  */
 import Vue from 'vue'
 import Router from 'vue-router'
-
 Vue.use(Router)
-
 /* Layout */
 import Layout from '@/layout'
-
-/**
+/** 说明
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
  *
@@ -35,19 +32,24 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
+// 常量路由 不管用户是什么角色都可以看见的
+// 异步路由 根据不同角色的用户从而过滤筛选出的路由
+
+// 常量路由
 export const constantRoutes = [
+  // 登录路由 常量路由
   {
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
+  // 404 常量路由
   {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
   },
-
+  // 首页 常量路由
   {
     path: '/',
     component: Layout,
@@ -58,8 +60,11 @@ export const constantRoutes = [
       component: () => import('@/views/dashboard/index'),
       meta: { title: '首页', icon: 'dashboard' }
     }]
-  },
-
+  }
+]
+// 异步路由
+export const asyncRoutes = [
+  // 商品管理
   {
     path: '/pruduct',
     component: Layout,
@@ -92,6 +97,7 @@ export const constantRoutes = [
       }
     ]
   },
+  // 权限管理
   {
     name: 'Acl',
     path: '/acl',
@@ -138,6 +144,7 @@ export const constantRoutes = [
       }
     ]
   },
+  // 测试管理
   {
     path: '/test',
     component: Layout,
@@ -157,7 +164,10 @@ export const constantRoutes = [
         meta: { title: '测试管理2' }
       }
     ]
-  },
+  }
+]
+// 任意路由 当路径出现错误的时候
+export const anyRoutes = [
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
@@ -170,6 +180,7 @@ const createRouter = () => new Router({
 
 const router = createRouter()
 
+// 路由重置
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
   const newRouter = createRouter()
@@ -177,3 +188,4 @@ export function resetRouter() {
 }
 
 export default router
+

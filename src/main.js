@@ -1,7 +1,7 @@
 /*
  * @Author: Jin Haocong
  * @Date: 2022-08-22 10:53:58
- * @LastEditTime: 2022-08-23 15:56:23
+ * @LastEditTime: 2022-08-26 09:16:24
  */
 import Vue from 'vue'
 
@@ -14,8 +14,8 @@ import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 import '@/styles/index.scss' // global css
 
 import App from './App'
-import store from './store'
 import router from './router'
+import store from './store'
 
 import '@/icons' // icon
 import '@/permission' // permission control

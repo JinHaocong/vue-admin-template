@@ -1,3 +1,8 @@
+<!--
+ * @Author: Jin Haocong
+ * @Date: 2022-08-22 10:53:58
+ * @LastEditTime: 2022-08-26 00:28:23
+-->
 <template>
   <div :class="{'has-logo':showLogo}">
     <logo v-if="showLogo" :collapse="isCollapse" />
@@ -31,7 +36,8 @@ export default {
       'sidebar'
     ]),
     routes() {
-      return this.$router.options.routes
+      // 遍历仓库计算好的路由
+      return this.$store.state.user.finallRoutes
     },
     activeMenu() {
       const route = this.$route
