@@ -1,7 +1,7 @@
 /*
  * @Author: Jin Haocong
  * @Date: 2022-08-22 10:53:58
- * @LastEditTime: 2022-08-26 09:21:41
+ * @LastEditTime: 2022-08-30 20:21:14
  */
 import Vue from 'vue'
 import Router from 'vue-router'
@@ -74,7 +74,7 @@ export const asyncRoutes = [
       {
         path: '/pruduct/trademark',
         component: () => import('@/views/product/tradeMark'),
-        name: 'TradeMark',
+        name: 'Trademark',
         meta: { title: '品牌管理' }
       },
       {

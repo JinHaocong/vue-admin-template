@@ -1,7 +1,7 @@
 /*
  * @Author: Jin Haocong
  * @Date: 2022-08-22 10:53:58
- * @LastEditTime: 2022-08-26 10:12:40
+ * @LastEditTime: 2022-08-30 20:19:32
  */
 // 引入登录 退出登录 用户信息的接口函数
 import { login, logout, getInfo } from '@/api/user'
